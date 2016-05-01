@@ -21,9 +21,10 @@ SET CHERE_INVOKING=1
 %MSYS2_PATH%\usr\bin\bash -lc "./script.sh"
 SET PATH=%MSYS2_PATH%;%PATH%
 (
-	echo.pacman --noconfirm --needed -Syu patch make unzip git mingw-w64-%MSYS2_ARCH%-cmake mingw-w64-%MSYS2_ARCH%-gcc
+	echo.pacman --noconfirm -Syu
+	echo.pacman --noconfirm -Sy patch make unzip git mingw-w64-%MSYS2_ARCH%-cmake mingw-w64-%MSYS2_ARCH%-gcc
 	echo.exit
 )>script.sh
 %MSYS2_PATH%\usr\bin\bash -lc "./script.sh"
 
-#%MSYS2_PATH%\autorebase.bat > nul
+rem %MSYS2_PATH%\autorebase.bat > nul
