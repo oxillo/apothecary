@@ -19,7 +19,7 @@ build_script:
   - set CHERE_INVOKING=1
   - '%MSYS2_PATH%\usr\bin\bash -lc "which gcc && which pacman"'
   - '%MSYS2_PATH%\usr\bin\bash -lc "mkdir ci"'
-  - '%MSYS2_PATH%\usr\bin\bash -lc "cd apothecary && ./apothecary -d ../ci update freeimage zlib pkg-config pixman kiss videoInput utf8 rtAudio portAudio json glfw glew"'
+  - '%MSYS2_PATH%\usr\bin\bash -lc "cd apothecary && ./apothecary -v -d ../ci update pkg-config freeimage zlib  pixman kiss videoInput utf8 rtAudio portAudio json glfw glew"'
   
 artifacts:
   - path: openFrameworksLibs_%APPVEYOR_REPO_BRANCH%_msys2_%MSYS2_BITS%.zip
