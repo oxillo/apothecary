@@ -167,7 +167,7 @@ build_script:
 - '%MSYS2_PATH%\usr\bin\bash -lc "scripts/build.sh"'
 
 after_build:
-- set OF_BUNDLE=openFrameworksLibs_${APPVEYOR_REPO_BRANCH}_${TARGET}${VS_NAME}_${ARCH}_${BUNDLE}
+- set OF_BUNDLE=openFrameworksLibs_%APPVEYOR_REPO_BRANCH%_%TARGET%%VS_NAME%_%ARCH%_%BUNDLE%
 
 test: off
 
@@ -180,7 +180,7 @@ artifacts:
 
 
 before_deploy:
-- md5sum ${OF_BUNDLE}.zip > ${OF_BUNDLE}.md5 && appveyor PushArtifact ${OF_BUNDLE}.md5
+- md5sum "%OF_BUNDLE%.zip" > "%OF_BUNDLE%.md5" && appveyor PushArtifact "%OF_BUNDLE%.md5"
 
 deploy:
     provider: FTP
