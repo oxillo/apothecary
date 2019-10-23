@@ -284,10 +284,7 @@ else
     LIBS=$(ls $OUTPUT_FOLDER)
 fi
 
-if [ ! -z ${APPVEYOR+x} ]; then
-	TARBALL=${ROOT}/openFrameworksLibs_${APPVEYOR_REPO_BRANCH}_${TARGET}${VS_NAME}_${ARCH}_${BUNDLE}.zip
-	7z a $TARBALL $LIBS
-else
+if [ "$TRAVIS" = true ]; then
 	TARBALL=openFrameworksLibs_${TRAVIS_BRANCH}_$TARGET$OPT$ARCH$BUNDLE.tar.bz2
     if [ "$TARGET" == "emscripten" ]; then
 	    run "cd ${OUTPUT_FOLDER}; tar cjf $TARBALL $LIBS"
