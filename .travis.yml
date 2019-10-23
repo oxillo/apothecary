@@ -204,6 +204,7 @@ install:
   - scripts/$TARGET/install.sh
 script:
   - scripts/build.sh
-
+script:
+  - cd out && tar cjf __openFrameworksLibs_${TRAVIS_BRANCH}_$TARGET$OPT$ARCH$BUNDLE.tar.bz2 * && cd ..
 git:
     depth: 10
