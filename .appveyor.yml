@@ -151,6 +151,8 @@ init:
 - if "%TARGET%"=="msys2" (%MSYS2_PATH%\usr\bin\bash -lc "pacman --noconfirm --needed -Su ${MINGW_PACKAGE_PREFIX}-libxml2")
 # prepend PATH after msbuild command line environment has been set up.
 - set PATH=%PATH%;%MSYS2_PATH%/usr/bin;
+- set ARTIFACT=openFrameworksLibs_%APPVEYOR_REPO_BRANCH%_%TARGET%%VS_NAME%_%ARCH%
+- if defined BUNDLE set ARTIFACT=%ARTIFACT%_%BUNDLE%
 
 # # visual studio 2015
 # - if "%PLATFORM%_%VS_VER%"=="x86_14" call "%VS140COMNTOOLS%\vsvars32.bat"
@@ -167,7 +169,6 @@ build_script:
 - '%MSYS2_PATH%\usr\bin\bash -lc "scripts/build.sh"'
 
 after_build:
-- set OF_BUNDLE=openFrameworksLibs_%APPVEYOR_REPO_BRANCH%_%TARGET%%VS_NAME%_%ARCH%_%BUNDLE%
 
 test: off
 
@@ -176,11 +177,11 @@ test: off
 
 artifacts:
     - path: out
-      name: ${OF_BUNDLE}.zip
+      name: ${ARTIFACT}
 
 
 before_deploy:
-- md5sum "%OF_BUNDLE%.zip" > "%OF_BUNDLE%.md5" && appveyor PushArtifact "%OF_BUNDLE%.md5"
+- md5sum "%ARTIFACT%.zip" > "%ARTIFACT%.md5" && appveyor PushArtifact "%ARTIFACT%.md5"
 
 deploy:
     provider: FTP
@@ -190,5 +191,5 @@ deploy:
     password:
         secure: ALHv+04sZ49FZ4OCj6tTSg==
     folder: libs
-    on:
-      APPVEYOR_REPO_NAME: openframeworks/apothecary
+#    on:
+#      APPVEYOR_REPO_NAME: openframeworks/apothecary
