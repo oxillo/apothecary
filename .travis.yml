@@ -113,6 +113,7 @@ before_deploy:
   - cp scripts/ssh_config ~/.ssh/config
   - chmod 600 scripts/id_rsa
 deploy:
+  skip_cleanup : true
   provider: script
   script:
     - echo Uploading libraries
