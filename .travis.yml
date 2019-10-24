@@ -113,9 +113,11 @@ before_deploy:
   - cp scripts/ssh_config ~/.ssh/config
   - chmod 600 scripts/id_rsa
 deploy:
-  - echo Uploading libraries
-  - scp -i scripts/id_rsa $TARBALL tests@ci.openframeworks.cc:libs/$TARBALL.new
-  - ssh -i scripts/id_rsa tests@ci.openframeworks.cc "mv libs/$TARBALL.new libs/$TARBALL"
+  provider: script
+  script:
+    - echo Uploading libraries
+    - scp -i scripts/id_rsa $TARBALL tests@ci.openframeworks.cc:libs/$TARBALL.new
+    - ssh -i scripts/id_rsa tests@ci.openframeworks.cc "mv libs/$TARBALL.new libs/$TARBALL"
 after_deploy:
   - rm scripts/id_rsa
 git:
