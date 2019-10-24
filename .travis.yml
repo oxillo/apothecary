@@ -103,9 +103,14 @@ install:
   - scripts/$TARGET/install.sh
 script:
   - scripts/build.sh
-after_success:
-  - TARBALL=openFrameworksLibs_${TRAVIS_BRANCH}_$TARGET$OPT$ARCH$BUNDLE.tar.bz2
-  - cd out && tar cjf $TARBALL * && cd ..
+after_success: >
+  TARBALL=openFrameworksLibs_${TRAVIS_BRANCH}_$TARGET$OPT$ARCH$BUNDLE.tar.bz2
+  if [ "$TARGET" == "emscripten" ]; then
+	  run "cd out && tar cjf $TARBALL * && cd .."
+    docker cp emscripten:out/${TARBALL} .
+  else
+    cd out && tar cjf $TARBALL * && cd ..
+  fi
 
 before_deploy:
   - echo Unencrypting key
