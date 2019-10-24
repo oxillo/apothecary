@@ -119,6 +119,8 @@ deploy:
     - echo Uploading libraries
     - scp -i scripts/id_rsa $TARBALL tests@ci.openframeworks.cc:libs/$TARBALL.new
     - ssh -i scripts/id_rsa tests@ci.openframeworks.cc "mv libs/$TARBALL.new libs/$TARBALL"
+  on:
+    branch: md5sum
 after_deploy:
   - rm scripts/id_rsa
 git:
