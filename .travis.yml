@@ -103,7 +103,7 @@ install:
   - scripts/$TARGET/install.sh
 script:
   - scripts/build.sh
-after_success: >
+after_success: |
   TARBALL=openFrameworksLibs_${TRAVIS_BRANCH}_$TARGET$OPT$ARCH$BUNDLE.tar.bz2
   if [ "$TARGET" == "emscripten" ]; then
 	  run "cd out && tar cjf $TARBALL * && cd .."
