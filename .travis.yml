@@ -104,18 +104,7 @@ install:
 script:
   - scripts/build.sh
 after_success: 
-  - |
-    PACKAGE=openFrameworksLibs_${TRAVIS_BRANCH}_$TARGET$OPT$ARCH$BUNDLE
-    TARBALL=${PACKAGE}.tar.bz2
-    MD5=${PACKAGE}.md5
-    if [ "$TARGET" == "emscripten" ]; then
-      run "cd out && tar cjf $TARBALL * && cd .."
-      docker cp emscripten:out/${TARBALL} .
-    else
-      cd out && tar cjf $TARBALL * && cd ..
-    fi
-    md5sum $TARBALL > ${MD5}
-  - echo Done
+  - scripts/package.sh
 
 before_deploy:
   - echo Unencrypting key
