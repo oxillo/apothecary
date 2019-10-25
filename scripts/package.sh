@@ -3,6 +3,10 @@ set -e
 # capture failing exits in commands obscured behind a pipe
 set -o pipefail
 
+if [ -z ${OUTPUT_FOLDER+x} ]; then
+    OUTPUT_FOLDER=$(cd $(dirname "$0")/../out; pwd -P)
+fi
+
 PACKAGE=openFrameworksLibs
 if [ ! -z ${APPVEYOR+x} ]; then
     PACKAGE=${PACKAGE}_${APPVEYOR_REPO_BRANCH}
@@ -26,14 +30,14 @@ if [ "$TARGET" == "vs" ] || [ "$TARGET" == "msys2" ]; then
     7z a ${TARBALL} *
     popd
 elif [ "$TARGET" == "emscripten" ]; then
-    run "cd out && tar cjf $TARBALL * && cd .."
-    docker cp emscripten:out/${TARBALL} .
+    run "cd ${OUTPUT_FOLDER} && tar cjf $TARBALL * && cd .."
+    docker cp emscripten:${OUTPUT_FOLDER}/${TARBALL} .
 else
-    pushd out
+    pushd ${OUTPUT_FOLDER}
     tar cjf $TARBALL *
     popd
 fi
 
 # Compute MD5 sum
 MD5=${PACKAGE}.md5
-md5sum out/${TARBALL} > out/${MD5}
+md5sum ${OUTPUT_FOLDER}/${TARBALL} > ${OUTPUT_FOLDER}/${MD5}
