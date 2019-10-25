@@ -36,4 +36,4 @@ fi
 
 # Compute MD5 sum
 MD5=${PACKAGE}.md5
-md5sum ${TARBALL} > ${MD5}
+md5sum out/${TARBALL} > out/${MD5}
