@@ -104,6 +104,7 @@ install:
 script:
   - scripts/build.sh
 after_success: 
+  - chmod +x scripts/package.sh
   - scripts/package.sh
 
 before_deploy:
