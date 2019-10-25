@@ -261,18 +261,3 @@ echo ""
 if  type "ccache" > /dev/null; then
     echo $(ccache -s)
 fi
-
-
-if [[ $TRAVIS_SECURE_ENV_VARS == "false" ]]; then
-    echo "No secure vars set so exiting before compressing";
-    exit 0
-fi
-
-echo "Compressing libraries from $OUTPUT_FOLDER"
-if [ "$TRAVIS" = true ] && [ "$TARGET" == "emscripten" ]; then
-    LIBSX=$(docker exec -i emscripten sh -c "cd $OUTPUT_FOLDER; ls")
-    LIBS=${LIBSX//[$'\t\r\n']/ }
-else
-    cd $OUTPUT_FOLDER;
-    LIBS=$(ls $OUTPUT_FOLDER)
-fi
