@@ -116,8 +116,8 @@ deploy:
   provider: script
   script:
     - echo Uploading libraries
-    - scp -i scripts/id_rsa $TARBALL tests@ci.openframeworks.cc:libs/$TARBALL.new
-    - scp -i scripts/id_rsa $MD5 tests@ci.openframeworks.cc:libs/$MD5.new
+    - scp -i scripts/id_rsa out/$TARBALL tests@ci.openframeworks.cc:libs/$TARBALL.new
+    - scp -i scripts/id_rsa out/$MD5 tests@ci.openframeworks.cc:libs/$MD5.new
     - ssh -i scripts/id_rsa tests@ci.openframeworks.cc "mv libs/$TARBALL.new libs/$TARBALL"
     - ssh -i scripts/id_rsa tests@ci.openframeworks.cc "mv libs/$MD5.new libs/$MD5"
   on:
