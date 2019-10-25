@@ -166,6 +166,9 @@ install:
 build_script:
 - '%MSYS2_PATH%\usr\bin\bash -lc "scripts/build.sh"'
 
+after_build:
+- '%MSYS2_PATH%\usr\bin\bash -lc "scripts/package.sh"'
+
 test: off
 
 # on_finish:
@@ -173,6 +176,7 @@ test: off
 
 artifacts:
     - path: 'openFrameworks*.zip'
+    - path: 'openFrameworks*.md5'
 
 deploy:
     provider: FTP
