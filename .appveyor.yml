@@ -175,8 +175,8 @@ test: off
   # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 artifacts:
-    - path: 'openFrameworks*.zip'
-    - path: 'openFrameworks*.md5'
+    - path: 'out/openFrameworks*.zip'
+    - path: 'out/openFrameworks*.md5'
 
 deploy:
     provider: FTP
