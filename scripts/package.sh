@@ -25,7 +25,7 @@ if [ "$TARGET" == "vs" ] || [ "$TARGET" == "msys2" ]; then
     pushd out
     7z a ${TARBALL} *
     popd
-elif [ "$TARGET" == "emscripten" ]
+elif [ "$TARGET" == "emscripten" ];
     run "cd out && tar cjf $TARBALL * && cd .."
     docker cp emscripten:out/${TARBALL} .
 else
