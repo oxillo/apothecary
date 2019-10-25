@@ -107,13 +107,14 @@ after_success:
   - |
     PACKAGE=openFrameworksLibs_${TRAVIS_BRANCH}_$TARGET$OPT$ARCH$BUNDLE
     TARBALL=${PACKAGE}.tar.bz2
+    MD5=${PACKAGE}.md5
     if [ "$TARGET" == "emscripten" ]; then
       run "cd out && tar cjf $TARBALL * && cd .."
       docker cp emscripten:out/${TARBALL} .
     else
       cd out && tar cjf $TARBALL * && cd ..
     fi
-    md5sum $TARBALL > ${PACKAGE}.md5
+    md5sum $TARBALL > ${MD5}
   - echo Done
 
 before_deploy:
@@ -127,7 +128,9 @@ deploy:
   script:
     - echo Uploading libraries
     - scp -i scripts/id_rsa $TARBALL tests@ci.openframeworks.cc:libs/$TARBALL.new
+    - scp -i scripts/id_rsa $MD5 tests@ci.openframeworks.cc:libs/$MD5.new
     - ssh -i scripts/id_rsa tests@ci.openframeworks.cc "mv libs/$TARBALL.new libs/$TARBALL"
+    - ssh -i scripts/id_rsa tests@ci.openframeworks.cc "mv libs/$MD5.new libs/$MD5"
   on:
     branch: md5sum
 after_deploy:
