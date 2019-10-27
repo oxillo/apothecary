@@ -34,7 +34,7 @@ createArchImg(){
 		pacman --noconfirm -r archlinux/ --config archlinux/etc/pacman.conf --arch=armv7h -S make pkg-config gcc raspberrypi-firmware
 EOF
 	chmod 755 $ROOT/install_image.sh
-	junest -u $ROOT/install_image.sh
+	junest $ROOT/install_image.sh
 	touch $HOME/archlinux/timestamp
 }
 
@@ -83,7 +83,8 @@ relativeSoftLinks(){
 installJunest(){
 	git clone git://github.com/fsquillace/junest ~/.local/share/junest
 	export PATH=~/.local/share/junest/bin:$PATH
-	junest -u << EOF
+    junest setup
+    junest -- << EOF
         echo updating keys
         pacman -S gnupg --noconfirm
         pacman-key --populate archlinux
