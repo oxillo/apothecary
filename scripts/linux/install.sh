@@ -46,7 +46,7 @@ echoDots(){
 if [ "$OPT" == "gcc4" ]; then
     sudo add-apt-repository -y ppa:dns/gnu
     sudo apt-get update -q
-    sudo apt-get install -y gperf coreutils realpath libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev
+    sudo apt-get install -y gperf coreutils realpath libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev pugixml
 elif [ "$OPT" == "gcc5" ]; then
     sudo add-apt-repository -y ppa:dns/gnu
     sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -66,7 +66,7 @@ elif [ "$OPT" == "gcc5" ]; then
     rm *.deb
 
     sudo apt-get install -f
-    sudo apt-get install -y gperf coreutils realpath libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev
+    sudo apt-get install -y gperf coreutils realpath libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev pugixml
     sudo apt-get remove -y --purge g++-4.8
     sudo apt-get autoremove
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 100
@@ -94,7 +94,7 @@ elif [ "$OPT" == "gcc6" ]; then
 	sudo apt-get update -q
 	sudo apt-get install -y --allow-unauthenticated gcc-6 g++-6
 
-    sudo apt-get install -y gperf coreutils realpath libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev
+    sudo apt-get install -y gperf coreutils realpath libxrandr-dev libxinerama-dev libx11-dev libxcursor-dev libxi-dev pugixml
     sudo apt-get remove -y --purge g++-4.8
     sudo apt-get autoremove
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 100
