@@ -35,7 +35,7 @@ createArchImg(){
 		pacman --noconfirm -r archlinux/ --config archlinux/etc/pacman.conf --arch=armv7h -S make pkg-config gcc raspberrypi-firmware
 EOF
 	chmod 755 $ROOT/install_image.sh
-	junest -u $ROOT/install_image.sh
+	junest $ROOT/install_image.sh
     echo "**************^PWD^******************"
     echo "**************^PWD^******************"
     echo "**************^PWD^******************"
