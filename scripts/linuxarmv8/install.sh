@@ -35,27 +35,29 @@ createArchImg(){
         pwd
         echo "**************^PWD^******************"
         wget -v http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-4-latest.tar.gz
-	    mkdir ~/archlinux
+	    mkdir $HOME/archlinux
         ls 
         echo "*************LS FIRST*******************"
-        tar xzf ArchLinuxARM-rpi-4-latest.tar.gz -C ~/archlinux/
+        tar xzf ArchLinuxARM-rpi-4-latest.tar.gz -C $HOME/archlinux/
         ls 
         echo "*************$(HOME)*******************"
-        ls ~/archlinux/etc
+        ls $HOME/archlinux/etc
         echo "**************^LS ARCHLINUX/ETC^******************"
         pwd
         echo "**************^PWD^******************"
-        sed -i s_/etc/pacman_/home/travis/archlinux/etc/pacman_g ~/archlinux/etc/pacman.conf
-		pacman --noconfirm -r /home/travis/archlinux/ --config /home/travis/archlinux/etc/pacman.conf --arch=armv8 -Syu
-		pacman --noconfirm -r /home/travis/archlinux/ --config /home/travis/archlinux/etc/pacman.conf --arch=armv8 -S make pkg-config gcc raspberrypi-firmware
+        sed -i s_/etc/pacman_$HOME/archlinux/etc/pacman_g $HOME/archlinux/etc/pacman.conf
+		pacman --noconfirm -r $HOME/archlinux/ --config $HOME/archlinux/etc/pacman.conf --arch=armv8 -Syu
+		pacman --noconfirm -r $HOME/archlinux/ --config $HOME/archlinux/etc/pacman.conf --arch=armv8 -S make pkg-config gcc raspberrypi-firmware
 EOF
 	touch $HOME/archlinux/timestamp
 }
 
 downloadToolchain(){
-    wget http://archlinuxarm.org/builder/xtools/x-tools8.tar.xz
-    tar xf x-tools8.tar.xz
-    rm x-tools8.tar.xz
+    junest -- <<EOF
+        wget -v http://archlinuxarm.org/builder/xtools/x-tools8.tar.xz
+        tar xf x-tools8.tar.xz
+        rm x-tools8.tar.xz
+EOF
     #if [ "$(ls -A ~/rpi2_toolchain)" ]; then
     #    echo "Using cached RPI2 toolchain"
     #else
