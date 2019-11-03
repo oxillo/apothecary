@@ -39,7 +39,7 @@ createArchImg(){
         tar xzf ArchLinuxARM-rpi-4-latest.tar.gz --no-same-owner -C $HOME/archlinux/
         pwd
         echo "**************^PWD^******************"
-        sed -i s_/etc/pacman_$HOME/archlinux/etc/pacman_g $HOME/archlinux/etc/pacman.conf
+        #sed -i s_/etc/pacman_$HOME/archlinux/etc/pacman_g $HOME/archlinux/etc/pacman.conf
         cat $HOME/archlinux/etc/pacman.conf
         echo "**************^PACMAN.CONF^******************"
         cat $HOME/archlinux/etc/pacman.d/mirrorlist
