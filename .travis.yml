@@ -31,7 +31,7 @@ matrix:
 before_install:
   - scripts/calculate_formulas.sh
 install:
-  - scripts/$TARGET/install.sh
+  - sh scripts/$TARGET/install.sh
 script:
   - scripts/build.sh
 
