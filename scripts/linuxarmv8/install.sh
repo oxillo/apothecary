@@ -31,11 +31,15 @@ createArchImg(){
 	junest -- <<EOF
         wget -v http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-4-latest.tar.gz
 	    mkdir archlinux
+        ls 
+        echo "*************LS FIRST*******************"
         tar xzf ArchLinuxARM-rpi-4-latest.tar.gz -C archlinux/
         ls 
         echo "*************$(HOME)*******************"
         ls archlinux/etc
-        echo "********************************"
+        echo "**************^LS ARCHLINUX/ETC^******************"
+        pwd
+        echo "**************^PWD^******************"
         sed -i s_/etc/pacman_$HOME/archlinux/etc/pacman_g archlinux/etc/pacman.conf
 		pacman --noconfirm -r archlinux/ --config archlinux/etc/pacman.conf --arch=armv8 -Syu
 		pacman --noconfirm -r archlinux/ --config archlinux/etc/pacman.conf --arch=armv8 -S make pkg-config gcc raspberrypi-firmware
