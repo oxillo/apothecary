@@ -25,16 +25,15 @@ createArchImg(){
 	cd $HOME
 	wget -v http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz
 	mkdir archlinux
-	tar xzf ArchLinuxARM-rpi-2-latest.tar.gz -C archlinux/ 2> /dev/null
-	sed -i s_/etc/pacman_$HOME/archlinux/etc/pacman_g archlinux/etc/pacman.conf
+	
 
     #./arch-bootstrap_downloadonly.sh -a armv7h -r "http://eu.mirror.archlinuxarm.org/" archlinux
-	cat > $ROOT/install_image.sh << EOF
+	junest <<EOF
+        tar xzf ArchLinuxARM-rpi-2-latest.tar.gz -C archlinux/ 2> /dev/null
+        sed -i s_/etc/pacman_$HOME/archlinux/etc/pacman_g archlinux/etc/pacman.conf
 		pacman --noconfirm -r archlinux/ --config archlinux/etc/pacman.conf --arch=armv7h -Syu
 		pacman --noconfirm -r archlinux/ --config archlinux/etc/pacman.conf --arch=armv7h -S make pkg-config gcc raspberrypi-firmware
 EOF
-	chmod 755 $ROOT/install_image.sh
-	junest $ROOT/install_image.sh
 	touch $HOME/archlinux/timestamp
 }
 
@@ -91,7 +90,7 @@ installJunest(){
         pacman-key --refresh-keys
         echo updating packages
 		pacman -Syyu --noconfirm
-		pacman -S --noconfirm git flex grep gcc pkg-config make wget
+		pacman -S --noconfirm git flex grep gcc pkg-config make wget sed
 EOF
 }
 
