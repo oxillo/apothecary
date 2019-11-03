@@ -19,6 +19,9 @@ function download() {
     tar xzf v${VER}.tar.gz
     mv libxml2-${VER} libxml2
     rm v${VER}.tar.gz
+    pwd 
+    ls
+    echo "*******"
 }
 
 # prepare the build environment, executed inside the lib src dir
@@ -35,6 +38,9 @@ function prepare() {
 
 # executed inside the lib src dir
 function build() {
+    pwd 
+    ls
+    echo "*******"
     if [ "$TYPE" == "vs" ] ; then
         unset TMP
         unset TEMP
