@@ -17,7 +17,7 @@ function download() {
     #wget -nv ftp://xmlsoft.org/libxml2/libxml2-${VER}.tar.gz
     wget -v https://github.com/GNOME/libxml2/archive/v${VER}.tar.gz
     tar xzf v${VER}.tar.gz
-    libxml2-${VER} libxml2
+    mv libxml2-${VER} libxml2
     rm v${VER}.tar.gz
 }
 
