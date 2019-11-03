@@ -22,7 +22,7 @@ createArchImg(){
     sudo add-apt-repository ppa:dns/gnu -y
     sudo apt-get update -q
     sudo apt-get install -y coreutils realpath gperf
-	cd $HOME
+	cd ~
 	#wget -v http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-4-latest.tar.gz
 	#mkdir archlinux
 	
@@ -30,19 +30,19 @@ createArchImg(){
     #./arch-bootstrap_downloadonly.sh -a armv7h -r "http://eu.mirror.archlinuxarm.org/" archlinux
 	junest -- <<EOF
         wget -v http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-4-latest.tar.gz
-	    mkdir archlinux
+	    mkdir ~/archlinux
         ls 
         echo "*************LS FIRST*******************"
-        tar xzf ArchLinuxARM-rpi-4-latest.tar.gz -C archlinux/
+        tar xzf ArchLinuxARM-rpi-4-latest.tar.gz -C ~/archlinux/
         ls 
         echo "*************$(HOME)*******************"
-        ls archlinux/etc
+        ls ~/archlinux/etc
         echo "**************^LS ARCHLINUX/ETC^******************"
         pwd
         echo "**************^PWD^******************"
-        sed -i s_/etc/pacman_$HOME/archlinux/etc/pacman_g archlinux/etc/pacman.conf
-		pacman --noconfirm -r archlinux/ --config archlinux/etc/pacman.conf --arch=armv8 -Syu
-		pacman --noconfirm -r archlinux/ --config archlinux/etc/pacman.conf --arch=armv8 -S make pkg-config gcc raspberrypi-firmware
+        sed -i s_/etc/pacman_/home/travis/archlinux/etc/pacman_g archlinux/etc/pacman.conf
+		pacman --noconfirm -r /home/travis/archlinux/ --config /home/travis/archlinux/etc/pacman.conf --arch=armv8 -Syu
+		pacman --noconfirm -r /home/travis/archlinux/ --config /home/travis/archlinux/etc/pacman.conf --arch=armv8 -S make pkg-config gcc raspberrypi-firmware
 EOF
 	touch $HOME/archlinux/timestamp
 }
