@@ -31,7 +31,7 @@ createArchImg(){
 	junest -- <<EOF
         wget -v http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-4-latest.tar.gz
 	    mkdir archlinux
-        tar xzf ~/ArchLinuxARM-rpi-4-latest.tar.gz -C ~/archlinux/ 2> /dev/null
+        tar xzf ArchLinuxARM-rpi-4-latest.tar.gz -C archlinux/
         ls ~/archlinux
         echo "********************************"
         ls ~/archlinux/etc
