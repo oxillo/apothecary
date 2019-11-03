@@ -44,8 +44,8 @@ createArchImg(){
         echo "**************^PACMAN.CONF^******************"
         cat $HOME/archlinux/etc/pacman.d/mirrorlist
         echo "**************^MIRRORLIST^******************"
-		pacman --noconfirm -v -r $HOME/archlinux/ --config $HOME/archlinux/etc/pacman.conf --arch=armv8 -Syu
-		pacman --noconfirm -v -r $HOME/archlinux/ --config $HOME/archlinux/etc/pacman.conf --arch=armv8 -S make pkg-config gcc raspberrypi-firmware
+		pacman --noconfirm -v --sysroot $HOME/archlinux/ --config $HOME/archlinux/etc/pacman.conf --arch=armv8 -Syu
+		pacman --noconfirm --needed -v --sysroot $HOME/archlinux/ --config $HOME/archlinux/etc/pacman.conf --arch=armv8 -S make pkg-config gcc raspberrypi-firmware unzip
 EOF
 	touch $HOME/archlinux/timestamp
 }
