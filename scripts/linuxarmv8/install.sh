@@ -36,16 +36,14 @@ createArchImg(){
         echo "**************^PWD^******************"
         wget -v http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-4-latest.tar.gz
 	    mkdir $HOME/archlinux
-        ls 
-        echo "*************LS FIRST*******************"
-        tar xzf ArchLinuxARM-rpi-4-latest.tar.gz -C $HOME/archlinux/
-        ls 
-        echo "*************$(HOME)*******************"
-        ls $HOME/archlinux/etc
-        echo "**************^LS ARCHLINUX/ETC^******************"
+        tar xzf ArchLinuxARM-rpi-4-latest.tar.gz --no-same-owner -C $HOME/archlinux/
         pwd
         echo "**************^PWD^******************"
         sed -i s_/etc/pacman_$HOME/archlinux/etc/pacman_g $HOME/archlinux/etc/pacman.conf
+        cat $HOME/archlinux/etc/pacman.conf
+        echo "**************^PACMAN.CONF^******************"
+        cat $HOME/archlinux/etc/pacman.d/mirrorlist
+        echo "**************^MIRRORLIST^******************"
 		pacman --noconfirm -r $HOME/archlinux/ --config $HOME/archlinux/etc/pacman.conf --arch=armv8 -Syu
 		pacman --noconfirm -r $HOME/archlinux/ --config $HOME/archlinux/etc/pacman.conf --arch=armv8 -S make pkg-config gcc raspberrypi-firmware
 EOF
