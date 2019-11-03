@@ -29,6 +29,11 @@ createArchImg(){
 
     #./arch-bootstrap_downloadonly.sh -a armv7h -r "http://eu.mirror.archlinuxarm.org/" archlinux
 	junest -- <<EOF
+        pwd
+        echo "**************^PWD^******************"
+        cd $HOME
+        pwd
+        echo "**************^PWD^******************"
         wget -v http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-4-latest.tar.gz
 	    mkdir ~/archlinux
         ls 
@@ -40,7 +45,7 @@ createArchImg(){
         echo "**************^LS ARCHLINUX/ETC^******************"
         pwd
         echo "**************^PWD^******************"
-        sed -i s_/etc/pacman_/home/travis/archlinux/etc/pacman_g archlinux/etc/pacman.conf
+        sed -i s_/etc/pacman_/home/travis/archlinux/etc/pacman_g ~/archlinux/etc/pacman.conf
 		pacman --noconfirm -r /home/travis/archlinux/ --config /home/travis/archlinux/etc/pacman.conf --arch=armv8 -Syu
 		pacman --noconfirm -r /home/travis/archlinux/ --config /home/travis/archlinux/etc/pacman.conf --arch=armv8 -S make pkg-config gcc raspberrypi-firmware
 EOF
