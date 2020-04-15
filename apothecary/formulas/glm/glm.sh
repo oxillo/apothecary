@@ -10,7 +10,7 @@ VER=0.9.9.8
 
 # tools for git use
 GIT_URL=https://github.com/g-truc/glm
-GIT_TAG=${VER}}
+GIT_TAG=${VER}
 
 # download the source code and unpack it into LIB_NAME
 function download() {
