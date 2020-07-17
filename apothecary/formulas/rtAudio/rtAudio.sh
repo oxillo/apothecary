@@ -15,7 +15,7 @@ FORMULA_TYPES=( "osx" "vs" "msys2" )
 #FORMULA_DEPENDS_MANUAL=1
 
 # define the version
-VER=5.0.0
+VER=5.1.0
 
 # tools for git use
 GIT_URL=https://github.com/thestk/rtaudio
