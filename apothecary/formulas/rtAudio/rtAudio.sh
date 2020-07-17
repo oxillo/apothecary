@@ -32,11 +32,7 @@ function download() {
 
 # prepare the build environment, executed inside the lib src dir
 function prepare() {
-	if [ "$TYPE" == "msys2" ] ; then
-		# patch to be able to compile without ASIO
-		patch -p1 -u -N  < $FORMULA_DIR/rtAudio.patch
-		cp -v $FORMULA_DIR/CMakeLists.txt .
-	fi
+	echo
 }
 
 # executed inside the lib src dir
@@ -106,9 +102,10 @@ function build() {
 		mkdir -p build
 		cd build
 		cmake .. -G "Unix Makefiles" \
-			-DAUDIO_WINDOWS_WASAPI=ON \
-			-DAUDIO_WINDOWS_DS=ON \
-			-DAUDIO_WINDOWS_ASIO=ON \
+			-DRTAUDIO_API_WASAPI=ON \
+			-DRTAUDIO_API_DS=ON \
+			-DRTAUDIO_API_ASIO=ON \
+			-DRTAUDIO_BUILD_STATIC_LIBS=ON \
 			-DBUILD_TESTING=OFF
 		make
 	fi
