@@ -137,7 +137,7 @@ function copy() {
 
 
 	elif [ "$TYPE" == "msys2" ] ; then
-		cp -v build/librtaudio_static.a $1/lib/$TYPE/librtaudio.a
+		cp -v build/librtaudio.a $1/lib/$TYPE/librtaudio.a
 
 	else
 		cp -v librtaudio.a $1/lib/$TYPE/rtaudio.a
