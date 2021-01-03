@@ -214,7 +214,7 @@ function build(){
 
     if [ "$VERBOSE" = true ] ; then
         echo "./apothecary $ARGS update $formula_name"
-        run "cd $APOTHECARY_PATH;./apothecary $ARGS update $formula_name"
+        run "cd $APOTHECARY_PATH;./apothecary -v $ARGS update $formula_name"
     else
         echo "./apothecary $ARGS update $formula_name" > formula.log 2>&1
         run_bg "cd $APOTHECARY_PATH;./apothecary $ARGS update $formula_name"
