@@ -866,17 +866,11 @@ function gitclone() {
 function with_vs_env(){
 	# we want to make sure that the build command is called with the correct environment variables set up 
 	# we achieve this by piping all commands into a .bat file and then calling this temporary .bat file.
-	if [ $ARCH == 32 ] ; then
-		echo "" > with_env.bat # cleanup temporary bat file
-		echo "call \"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat\"" >> with_env.bat
-		echo $@ >> with_env.bat
-		cmd.exe //C "call with_env.bat"
-	elif [ $ARCH == 64 ] ; then
-		echo "" > with_env.bat # cleanup temporary bat file
-		echo "call \"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat\"" >> with_env.bat
-		echo $@ >> with_env.bat
-		cmd.exe //C "call with_env.bat"
-	fi
+	# it is assumed that VCVAR_BAT have been set to VCVARS32.bat or VCVARS64.bat by vs-detectToolchain()
+	echo "" > with_env.bat # cleanup temporary bat file
+	echo "call \"$VCVARS_BAT\"" >> with_env.bat
+	echo $@ >> with_env.bat
+	cmd.exe //C "call with_env.bat"
 }
 
 
@@ -923,6 +917,15 @@ function vs-detectToolchain(){
 		exit 1
 	fi
 	echoVerbose " MSBuild detected at: ${MSBUILD_PATH}"
+
+	# Try to locate MSBuild.exe
+	VCVARS_BAT=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -find VC/Auxiliary/Build/vcvars$ARCH.bat`
+	if [ -z "$VCVARS_BAT" ] ; then
+		echoError "unable to find vcvars$ARCH.bat"
+		exit 1
+	else
+		echoVerbose " VCVARS$ARCH.bat detected at: ${VCVARS_BAT}"
+	fi
 
 	# Try to locate devenv.exe 
 	VS_IDE_INSTALL_PATH=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.VisualStudio.Component.VC.CoreIde -property installationPath`
