@@ -918,7 +918,7 @@ function vs-detectToolchain(){
 	echoVerbose " Visual Studio installation detected at: ${VS_INSTALL_PATH}"
 	
 	# Try to locate MSBuild.exe
-	if [ $vswhere_hasfind == 1 ] : then 
+	if [ $vswhere_hasfind == 1 ] ; then 
 		MSBUILD_PATH=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.Component.MSBuild -find MSBuild/**/Bin/MSBuild.exe`
 	else
 		MSBUILD_PATH=`/usr/bin/find $VS_INSTALL_PATH -wholename "/Bin/MSBuild.exe" -print`
@@ -930,7 +930,7 @@ function vs-detectToolchain(){
 	echoVerbose " MSBuild detected at: ${MSBUILD_PATH}"
 
 	# Try to locate MSBuild.exe
-	if [ $vswhere_hasfind == 1 ] : then 
+	if [ $vswhere_hasfind == 1 ] ; then 
 		VCVARS_BAT=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -find VC/Auxiliary/Build/vcvars$ARCH.bat`
 	else
 		VCVARS_BAT=`/usr/bin/find $VS_INSTALL_PATH -wholename "/VC/Auxiliary/Build/vcvars$ARCH.bat" -print`
