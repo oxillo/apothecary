@@ -928,6 +928,7 @@ function vs-detectToolchain(){
 	fi
 
 	# Try to locate devenv.exe 
+	cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.VisualStudio.Component.VC.CoreIde -property installationPath
 	VS_IDE_INSTALL_PATH=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.VisualStudio.Component.VC.CoreIde -property installationPath`
 	if [ -z "$VS_IDE_INSTALL_PATH" ] ; then
 		echoError "Unable to find an installation of devenv"
