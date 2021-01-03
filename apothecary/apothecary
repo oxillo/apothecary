@@ -889,7 +889,7 @@ function vs-detectToolchain(){
 	grep -E "\-find arg" <<< `cmd //C "$vswhere" -help`
 	if [ "$?" == "0"]; then
 		vswhere_hasfind=1
-	endif
+	fi
 
 
 	local req_vs_version
