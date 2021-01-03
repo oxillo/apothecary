@@ -881,14 +881,17 @@ function with_vs_env(){
 # if no version can be found, it will exit the script
 function vs-detectToolchain(){
 	local vswhere
-	local vswhere_hasfind=0
+	local vswhere_hasfind
 	# vswhere is a utility to find the most recent vs compiler toolchain. it is
 	# assumed to be installed at a fixed location
 	vswhere=`cmd.exe //c "echo %ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"`
 	# Check if vswhere has -find option
-	grep -E "\-find arg" <<< `cmd //C "$vswhere" -help`
-	if [ "$?" == "0"]; then
+	vswhere_hasfind=`"$vswhere" -help | { grep -cE " \-find arg " || :; }`
+	if [ $vswhere_hasfind -gt 0 ] ; then
+		echoVerbose "vswhere has find"
 		vswhere_hasfind=1
+	else
+		echoVerbose "vswhere doesn't have find"
 	fi
 
 
@@ -919,9 +922,11 @@ function vs-detectToolchain(){
 	
 	# Try to locate MSBuild.exe
 	if [ $vswhere_hasfind == 1 ] ; then 
+	    cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.Component.MSBuild -find MSBuild/**/Bin/MSBuild.exe
 		MSBUILD_PATH=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.Component.MSBuild -find MSBuild/**/Bin/MSBuild.exe`
 	else
-		MSBUILD_PATH=`/usr/bin/find $VS_INSTALL_PATH -wholename "/Bin/MSBuild.exe" -print`
+		/usr/bin/find "$VS_INSTALL_PATH" -wholename "/Bin/MSBuild.exe" -print
+		MSBUILD_PATH=`/usr/bin/find "$VS_INSTALL_PATH" -wholename "/Bin/MSBuild.exe" -print`
 	fi
 	if [ -z "$MSBUILD_PATH" ] ; then
 		echoError "Unable to find an installation of MSBuild"
@@ -933,7 +938,7 @@ function vs-detectToolchain(){
 	if [ $vswhere_hasfind == 1 ] ; then 
 		VCVARS_BAT=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -find VC/Auxiliary/Build/vcvars$ARCH.bat`
 	else
-		VCVARS_BAT=`/usr/bin/find $VS_INSTALL_PATH -wholename "/VC/Auxiliary/Build/vcvars$ARCH.bat" -print`
+		VCVARS_BAT=`/usr/bin/find "$VS_INSTALL_PATH" -wholename "/VC/Auxiliary/Build/vcvars$ARCH.bat" -print`
 	fi
 	if [ -z "$VCVARS_BAT" ] ; then
 		echoError "unable to find vcvars$ARCH.bat"
