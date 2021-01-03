@@ -233,8 +233,6 @@ init:
 install:
 - '%MSYS2_PATH%\usr\bin\bash -lc "scripts/calculate_formulas.sh"'
 - if "%TARGET%"=="vs" choco install -y strawberryperl
-- if "%TARGET%"=="vs" choco upgrade -fy vswhere
-- type C:\ProgramData\chocolatey\logs\chocolatey.log
 
 
 build_script:
