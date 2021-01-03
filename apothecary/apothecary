@@ -925,8 +925,8 @@ function vs-detectToolchain(){
 	    cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.Component.MSBuild -find MSBuild/**/Bin/MSBuild.exe
 		MSBUILD_PATH=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.Component.MSBuild -find MSBuild/**/Bin/MSBuild.exe`
 	else
-		/usr/bin/find "$VS_INSTALL_PATH" -name "MSBuild.exe" -print
-		MSBUILD_PATH=`/usr/bin/find "$VS_INSTALL_PATH" -wholename "/Bin/MSBuild.exe" -print`
+		/usr/bin/find "$VS_INSTALL_PATH" -name "*/Bin/MSBuild.exe" -print
+		MSBUILD_PATH=`/usr/bin/find "$VS_INSTALL_PATH" -wholename "*/Bin/MSBuild.exe" -print`
 	fi
 	if [ -z "$MSBUILD_PATH" ] ; then
 		echoError "Unable to find an installation of MSBuild"
@@ -938,7 +938,7 @@ function vs-detectToolchain(){
 	if [ $vswhere_hasfind == 1 ] ; then 
 		VCVARS_BAT=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -find VC/Auxiliary/Build/vcvars$ARCH.bat`
 	else
-		VCVARS_BAT=`/usr/bin/find "$VS_INSTALL_PATH" -wholename "/VC/Auxiliary/Build/vcvars$ARCH.bat" -print`
+		VCVARS_BAT=`/usr/bin/find "$VS_INSTALL_PATH" -wholename "*/VC/Auxiliary/Build/vcvars$ARCH.bat" -print`
 	fi
 	if [ -z "$VCVARS_BAT" ] ; then
 		echoError "unable to find vcvars$ARCH.bat"
