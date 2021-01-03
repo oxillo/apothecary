@@ -342,21 +342,6 @@ if [ $# -lt 1 ] ; then
 	exit 1
 fi
 
- if [ "$TYPE" == "vs" ]; then
-
- 	# At this point we assume that $PATH begins with "/usr/local/bin:/usr/bin:/bin:/opt/bin:", which
- 	# means that the bash environment will take precedence over windows build tools - this can lead
- 	# to some name-clashes, esp. with `link` for example, which has the same name, but might either
- 	# be the microsoft linker, or the gcc linker bundled with mingw. In most cases, the microsoft
- 	# build tools will be preferred, and we therefore need to make sure that the ms build tools occur
- 	# earlier in $PATH.
- 	#
- 	# We prepend the ms build tools path via a special environment variable which we receive via
- 	# `appveyor.yml`: `VS_BIN_PATH`, which is set in the `init:` step
-
-	export PATH="$VS_BIN_PATH:$PATH"
-
- fi
 
 ################################################################################
 ### FUNCTIONS
@@ -1292,6 +1277,17 @@ if [ "$TYPE" = "vs" ]; then
             export PATH="/c/Program Files/CMake/bin/:$PATH"
         fi
     fi
+
+ 	# At this point we assume that $PATH begins with "/usr/local/bin:/usr/bin:/bin:/opt/bin:", which
+ 	# means that the bash environment will take precedence over windows build tools - this can lead
+ 	# to some name-clashes, esp. with `link` for example, which has the same name, but might either
+ 	# be the microsoft linker, or the gcc linker bundled with mingw. In most cases, the microsoft
+ 	# build tools will be preferred, and we therefore need to make sure that the ms build tools occur
+ 	# earlier in $PATH.
+ 	#
+ 	# We prepend the ms build tools path via a special environment variable which we receive via
+ 	# `appveyor.yml`: `VS_BIN_PATH`, which is set in the `init:` step
+	export PATH="$VS_BIN_PATH:$PATH"
 fi
 
 # handle commands
