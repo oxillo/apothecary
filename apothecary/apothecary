@@ -879,23 +879,67 @@ function with_vs_env(){
 	fi
 }
 
+
+# Detect Visual Studio installation
+# vs-detectToolchain [version]
+# if version is not specified, it will use the latest installed version. 
+# if version is specified, it will try to locate the specified version
+# if no version can be found, it will exit the script
+function vs-detectToolchain(){
+	local vswhere
+	# vswhere is a utility to find the most recent vs compiler toolchain. it is
+	# assumed to be installed at a fixed location
+	vswhere=`cmd.exe //c "echo %ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"`
+
+	local req_vs_version
+	if [ "$1" == "15" ]; then
+		req_vs_version="-version [15.0,16.0)"
+	elif [ "$1" == "16" ]; then
+		req_vs_version="-version [16.0,17.0)"
+	else
+		req_vs_version="-latest"
+	fi
+
+	# Try to locate a Visual Studio product that matches version requirements
+	local vs_products="BuildTools Community Professional Enterprise"
+	local vs_product
+	for p in $vs_products ; do
+		vs_product="-products Microsoft.VisualStudio.Product.${p}"
+		VS_INSTALL_PATH=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -property installationPath`
+		if [ -n "$VS_INSTALL_PATH" ] ; then
+			break
+		fi
+	done
+	if [ "$VS_INSTALL_PATH" == "" ] ; then
+		echoError "Unable to detect a compatible Visual Studio installation"
+		exit 1
+	fi
+	echoVerbose " Visual Studio installation detected at: ${VS_INSTALL_PATH}"
+	
+	# Try to locate MSBuild.exe
+	MSBUILD_PATH=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.Component.MSBuild -find MSBuild/**/Bin/MSBuild.exe`
+	if [ -z "$MSBUILD_PATH" ] ; then
+		echoError "Unable to find an installation of MSBuild"
+		exit 1
+	fi
+	echoVerbose " MSBuild detected at: ${MSBUILD_PATH}"
+
+	# Try to locate devenv.exe 
+	VS_IDE_INSTALL_PATH=`cmd //c "${vswhere}" ${req_vs_version} ${vs_product} -requires Microsoft.VisualStudio.Component.VC.CoreIde -property installationPath`
+	if [ -z "$VS_IDE_INSTALL_PATH" ] ; then
+		echoError "Unable to find an installation of devenv"
+	fi
+	# msbuild is the tool used to build visual studio solutions
+	DEVENV_PATH="${VS_IDE_INSTALL_PATH}\Common7\IDE\devenv.exe"
+	echo "-- Found devenv path: ${DEVENV_PATH}"
+
+}
+
 # visual studio builder
 # args: <"path/to/sol.sln"> [action] [config]
 # example: vs-build "./tess2.sln" Build Debug
 # http://msdn.microsoft.com/library/vstudio/b20w810z.aspx
 function vs-build() {
-	echo "-- Searching for vs-build"
-	# vswhere is a utility to find the most recent vs compiler toolchain. it is
-	# assumed to be installed at a fixed location
-	VSWHERE_EXE=`cmd.exe //c "echo %ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"`
-	echo "-- Found vswhere: ${VSWHERE_EXE}"
-	# vswhere allows us to query the install dir of the ms build tools
-	VS_INSTALL_PATH=`cmd //c "${VSWHERE_EXE}" -latest -products Microsoft.VisualStudio.Product.Community -requires Microsoft.VisualStudio.Component.VC.CoreIde -property installationPath`
-	echo "-- Found vs install path: ${VS_INSTALL_PATH}"
-	# msbuild is the tool used to build visual studio solutions
-	MSBUILD_PATH="${VS_INSTALL_PATH}\MSBuild\\${VS_VER}.0\Bin\MSBuild.exe"
-	echo "-- Found MSBuild path: ${MSBUILD_PATH}"
-
 	# define fallback build selection if vs-build was not called with enough parameters.
 	if [ $ARCH == 32 ] ; then
 		DEFAULT_BUILD="Release|Win32"
@@ -924,21 +968,14 @@ function vs-build() {
 # visual studio upgrader
 # http://msdn.microsoft.com/en-us/library/vstudio/w15a82ay(v=vs.110).aspx
 function vs-upgrade() {
-	echo "-- vs-upgrade()"
-	echo "-- Searching for devenv"
-	# vswhere is a utility to find the most recent vs compiler toolchain. it is
-	# assumed to be installed at a fixed location
-	VSWHERE_EXE=`cmd.exe //c "echo %ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"`
-	echo "-- Found vswhere: ${VSWHERE_EXE}"
-	# vswhere allows us to query the install dir of the ms build tools
-	VS_IDE_INSTALL_PATH=`cmd //c "${VSWHERE_EXE}" -latest -products Microsoft.VisualStudio.Product.Community -requires Microsoft.VisualStudio.Component.VC.CoreIde -property installationPath`
-	echo "-- Found vs ide install path: ${VS_IDE_INSTALL_PATH}"
-	# msbuild is the tool used to build visual studio solutions
-	DEVENV_PATH="${VS_IDE_INSTALL_PATH}\Common7\IDE\devenv.exe"
-	echo "-- Found devenv path: ${DEVENV_PATH}"
+	if [ "$DEVENV_PATH" == "" ] ;  then
+		echoWarning " Skipping upgrade of $1"
+		return
+	fi
 
+	echo "-- vs-upgrade()"
 	UPGRADE_EXEC="\"${DEVENV_PATH}\" $1 /Upgrade"
-	echo "-- Upgrade parameters: $UPGRADE_EXEC"
+	echoVerbose "-- Upgrade parameters: $UPGRADE_EXEC"
 
 	# we need to add some extra outer quotes, since cmd.exe will only remove the outermost quotes and we might
 	# have some quotes inside the command.
@@ -1216,6 +1253,9 @@ if [ "$TYPE" = "vs" ]; then
 
         echo "PLATFORM set to '$PLATFORM', ${PLATFORM}_${VS_VER}"
     fi
+
+	vs-detectToolchain $VS_VER
+
 
     if [ -z ${VS_BIN_PATH+x} ]; then
         if [ "${PLATFORM}_${VS_VER}" = "x86_15" ]; then
