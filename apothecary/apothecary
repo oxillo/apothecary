@@ -1285,6 +1285,16 @@ if [ "$TYPE" = "vs" ]; then
 	if [ -d "/c/Program Files/CMake/bin/" ]; then
 		export PATH="/c/Program Files/CMake/bin/:$PATH"
 	fi
+	if [ "$VS_VER" == "15" ] ; then
+		export CMAKE_GENERATOR="Visual Studio 15 2017"
+	elif [ "$VS_VER" == "16" ] ; then
+		export CMAKE_GENERATOR="Visual Studio 16 2019"
+	fi
+	if [ $ARCH == 32 ] ; then
+		export CMAKE_GENERATOR_PLATFORM="Win32"
+	elif [ $ARCH == 64 ] ; then
+		export CMAKE_GENERATOR_PLATFORM="x64"
+	fi
 fi
 
 # handle commands
