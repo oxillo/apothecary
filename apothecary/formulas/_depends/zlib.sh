@@ -30,13 +30,10 @@ function build() {
 	if [ "$TYPE" == "vs" ] ; then
 		unset TMP
 		unset TEMP
-		if [ $ARCH == 32 ] ; then
-			cmake . -G "Visual Studio $VS_VER"
-			vs-build "zlib.sln" Build "Release|Win32"
-		elif [ $ARCH == 64 ] ; then
-			cmake . -G "Visual Studio $VS_VER Win64"
-			vs-build "zlib.sln" Build "Release|x64"
-		fi
+		# Cmake uses CMAKE_GENERATOR and CMAKE_GENERATOR_PLATFORM env variables set from apothecary
+		cmake . 
+		# vs-build defaults to "Release|Win32" or "Release|x64" besed on $ARCH
+		vs-build "zlib.sln" Build
 	fi
 }
 
