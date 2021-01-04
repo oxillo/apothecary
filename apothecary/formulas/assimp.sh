@@ -53,6 +53,10 @@ function prepare() {
     #   # fi
 
     # fi
+    # disable use of pkg_config that may com
+    if [ "$TYPE" == "vs" ] ; then
+        sed -i -e 's/use_pkgconfig(UNZIP minizip)/#use_pkgconfig(UNZIP minizip)/g' CMakeLists.txt
+    fi
 }
 
 # executed inside the lib src dir
@@ -119,20 +123,12 @@ function build() {
             -DASSIMP_BUILD_ASSIMP_TOOLS=0
             -DASSIMP_BUILD_X3D_IMPORTER=0
             -DLIBRARY_SUFFIX=${ARCH}"
-        local generatorName="Visual Studio "
-        generatorName+=$VS_VER
-        if [ $ARCH == 32 ] ; then
-            mkdir -p build_vs_32
-            cd build_vs_32
-            cmake .. -G "$generatorName" $buildOpts
-            vs-build "Assimp.sln" build "Release|Win32"
-        elif [ $ARCH == 64 ] ; then
-            mkdir -p build_vs_64
-            cd build_vs_64
-            generatorName+=' Win64'
-            cmake .. -G "$generatorName" $buildOpts
-            vs-build "Assimp.sln" build "Release|x64"
-        fi
+        mkdir -p build_vs_$ARCH
+        cd build_vs_$ARCH
+        # cmake uses generators set by CMAKE_GENERATOR env variables in apothecary
+        cmake .. $buildOpts
+        # vs-build defaults to "Release|Win32" or "Release|x64" based on $ARCH
+        vs-build "Assimp.sln" build
         cd ..
         #cleanup to not fail if the other platform is called
         rm -f CMakeCache.txt
