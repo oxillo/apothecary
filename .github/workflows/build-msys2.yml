@@ -16,10 +16,10 @@ jobs:
         include:
           - mingw: MINGW64
             arch: 64
-            pkg: mingw-w64-x86_64
+            prefix: mingw-w64-x86_64
           - mingw: MINGW32
             arch: 32
-            pkg: mingw-w64-i686
+            prefix: mingw-w64-i686
     defaults:
       run:
         shell: msys2 {0}
@@ -37,7 +37,7 @@ jobs:
           unzip
           dos2unix
           gperf
-          ${{pkg}}-libxml2
+          ${{matrix.prefix}}-libxml2
     - name: Scripts Calc Formula
       run:
         echo package prefix = ${MINGW_PACKAGE_PREFIX}
