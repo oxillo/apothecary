@@ -16,8 +16,10 @@ jobs:
         include:
           - mingw: MINGW64
             arch: 64
+            pkg: mingw-w64-x86_64
           - mingw: MINGW32
             arch: 32
+            pkg: mingw-w64-i686
     defaults:
       run:
         shell: msys2 {0}
@@ -35,11 +37,10 @@ jobs:
           unzip
           dos2unix
           gperf
-          ${MINGW_PACKAGE_PREFIX}-libxml2
+          ${{pkg}}-libxml2
     - name: Scripts Calc Formula
       run:
+        echo package prefix = ${MINGW_PACKAGE_PREFIX}
         ./scripts/calculate_formulas.sh
-    - name: Scripts Install
-      run: ./scripts/$TARGET/install.sh
     - name: build
       run: ./scripts/build.sh
