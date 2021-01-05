@@ -44,4 +44,5 @@ jobs:
         echo package prefix = ${MINGW_PACKAGE_PREFIX}
         ./scripts/calculate_formulas.sh
     - name: build
-      run: ./scripts/build.sh
+      run: |
+        CC=gcc && ./scripts/build.sh
