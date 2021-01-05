@@ -40,6 +40,7 @@ jobs:
           gperf
           make
           ${{matrix.prefix}}-gcc
+          ${{matrix.prefix}}-cmake
           ${{matrix.prefix}}-libxml2
     - name: Scripts Calc Formula
       run:
