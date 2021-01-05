@@ -25,7 +25,6 @@ jobs:
         shell: msys2 {0}
     env: 
       TARGET: msys2
-      #MSYSTEM: ${{ matrix.mingw }}
       ARCH: ${{ matrix.arch }}
     steps:
     - uses: actions/checkout@v2
@@ -38,8 +37,8 @@ jobs:
           unzip
           dos2unix
           gperf
+          make
           ${{matrix.prefix}}-libxml2
-          ${{matrix.prefix}}-make
     - name: Scripts Calc Formula
       run:
         echo package prefix = ${MINGW_PACKAGE_PREFIX}
