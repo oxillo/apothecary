@@ -36,6 +36,7 @@ jobs:
           git
           unzip
           dos2unix
+          patch
           gperf
           make
           ${{matrix.prefix}}-gcc
@@ -46,4 +47,4 @@ jobs:
         ./scripts/calculate_formulas.sh
     - name: build
       run: |
-        CC=gcc && ./scripts/build.sh
+        ./scripts/build.sh
