@@ -38,6 +38,7 @@ jobs:
           dos2unix
           gperf
           make
+          ${{matrix.prefix}}-gcc
           ${{matrix.prefix}}-libxml2
     - name: Scripts Calc Formula
       run:
