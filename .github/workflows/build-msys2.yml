@@ -31,6 +31,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: msys2/setup-msys2@v2
       with:
+        msystem: ${{matrix.mingw}}
         update: true
         install: >-
           git
@@ -38,6 +39,7 @@ jobs:
           dos2unix
           gperf
           ${{matrix.prefix}}-libxml2
+          ${MINGW_PACKAGE_PREFIX}-make
     - name: Scripts Calc Formula
       run:
         echo package prefix = ${MINGW_PACKAGE_PREFIX}
